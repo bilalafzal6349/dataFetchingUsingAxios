@@ -13,13 +13,13 @@ function App() {
   const count = Array.isArray(posts) ? posts.length : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-bl from-red-900 via-purple-100 to-yellow text-gray-500 px-4">
+    <div className="min-h-screen bg-[#1e3a8b] text-gray-500 px-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-black py-20">
           API Data Viewer with React & Axios
         </h1>
         <h2 className="text-gray-200 font-semibold text-3xl mx-auto text-center mb-2">
-          {count} posts fetched
+          {count} posts fetched from JSONPlaceholder and showing first 12
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 py-12">
@@ -57,7 +57,13 @@ function App() {
               </button>
             </div>
           ) : posts && posts.length > 0 ? (
-            posts.slice(0, 12).map((p) => <PostCard key={p.id} post={p} />)
+            posts.slice(0, 12).map((p) => {
+              return (
+                <div>
+                  <PostCard key={p.id} post={p} />;
+                </div>
+              );
+            })
           ) : (
             <p className="text-center text-gray-300">No posts to display.</p>
           )}
