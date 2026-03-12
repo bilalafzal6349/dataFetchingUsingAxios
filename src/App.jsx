@@ -1,72 +1,67 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-import axios from "axios";
+import useAxiosFetch from "./hooks/useAxiosFetch";
+import PostCard from "./components/PostCard";
 
 function App() {
-  const [Loading, setLoading] = useState(false);
-  const [Data, setData] = useState([]);
-  const [Error, setError] = useState(null);
+  const {
+    data: posts,
+    loading,
+    error,
+    refetch,
+  } = useAxiosFetch("https://jsonplaceholder.typicode.com/posts");
 
-  useEffect(() => {
-    const FetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts",
-        );
-        console.log(res.data);
-        setData(res.data);
-      } catch (err) {
-        console.log(err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-        console.log("fetching data is done");
-      }
-    };
-
-    FetchData();
-  }, []);
+  const count = Array.isArray(posts) ? posts.length : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-purple-900 to-black text-gray-100 px-4">
-      <h1 className="text-5xl font-extrabold underline text-center text-indigo-300 py-12">
-        API Fetching using axios and <br />
-        show its results using React Hooks in cards
-      </h1>
-      <h2 className="text-amber-200 font-bold text-4xl mx-auto text-center">
-        the data is {Data.length} posts
-      </h2>
+    <div className="min-h-screen bg-gradient-to-bl from-red-900 via-purple-100 to-yellow text-gray-500 px-4">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-black py-20">
+          API Data Viewer with React & Axios
+        </h1>
+        <h2 className="text-gray-200 font-semibold text-3xl mx-auto text-center mb-2">
+          {count} posts fetched
+        </h2>
 
-      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 py-12">
-        {Loading ? (
-          <p className="text-center text-5xl text-yellow-400">Loading...</p>
-        ) : Error ? (
-          <p className="text-center text-5xl text-red-500">Error: {Error}</p>
-        ) : (
-          Data.slice(0, 12).map((p) => {
-            return (
-              <div
-                key={p.id}
-                className="mx-auto bg-white p-4 rounded-lg shadow-lg mb-4  hover:scale-102 transition-transform"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 py-12">
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <svg
+                className="w-16 h-16 text-yellow-300 animate-spin"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
               >
-                <h1 className="text-gray-900">
-                  {" "}
-                  <span className="text-red-500 font-bold">
-                    title of post {p.id} :
-                  </span>{" "}
-                  {p.title}
-                </h1>
-                <p className="py-4 text-gray-800">
-                  <span className="text-blue-500 font-bold">
-                    body of post {p.id} :
-                  </span>{" "}
-                  {p.body}
-                </p>
-              </div>
-            );
-          })
-        )}
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+            </div>
+          ) : error ? (
+            <div className="text-center">
+              <p className="text-4xl text-red-400">Error: {error}</p>
+              <button
+                className="mt-4 px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white font-medium shadow"
+                onClick={refetch}
+              >
+                Retry
+              </button>
+            </div>
+          ) : posts && posts.length > 0 ? (
+            posts.slice(0, 12).map((p) => <PostCard key={p.id} post={p} />)
+          ) : (
+            <p className="text-center text-gray-300">No posts to display.</p>
+          )}
+        </div>
       </div>
     </div>
   );
