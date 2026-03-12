@@ -13,9 +13,9 @@ function App() {
   const count = Array.isArray(posts) ? posts.length : 0;
 
   return (
-    <div className="min-h-screen bg-[#1e3a8b] text-gray-500 px-4">
+    <div className="min-h-screen bg-[#225c3a] text-gray-500 px-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-black py-20">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-gray-200 py-20">
           API Data Viewer with React & Axios
         </h1>
         <h2 className="text-gray-200 font-semibold text-3xl mx-auto text-center mb-2">
