@@ -50,7 +50,7 @@ function App() {
             <div className="text-center">
               <p className="text-4xl text-red-400">Error: {error}</p>
               <button
-                className="mt-4 px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white font-medium shadow"
+                className="mt-4 px-5 py-2 purple-600 rounded-lg text-white font-medium shadow"
                 onClick={refetch}
               >
                 Retry
